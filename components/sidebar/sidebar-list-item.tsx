@@ -45,7 +45,10 @@ export interface SidebarListItemProps {
 }
 
 const baseClasses =
-  "adiago-sidebar-list-item group flex items-center justify-between pl-2 pr-1 py-1 mb-1 text-xs rounded text-neutral-900 cursor-pointer hover:bg-djent-100 dark:text-white dark:hover:bg-neutral-800 user-select-none";
+  "adiago-sidebar-list-item group flex items-center justify-between pl-2 pr-1 py-1 mb-1 text-xs rounded cursor-pointer user-select-none";
+const baseModifierClasses =
+  "text-neutral-900 hover:bg-djent-100 dark:text-white dark:hover:bg-neutral-800";
+
 const activeClasses =
   "bg-djent-500 text-white hover:bg-djent-600 dark:hover:bg-djent-600";
 const disabledClasses =
@@ -65,6 +68,7 @@ export const SidebarListItem: React.FC<SidebarListItemProps> = ({
   const classNames = classnames(
     baseClasses,
     {
+      [baseModifierClasses]: !active && !disabled,
       [activeClasses]: active,
       [disabledClasses]: disabled,
     },

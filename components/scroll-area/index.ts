@@ -1,7 +1,9 @@
-import { ScrollAreaVertical as Vertical } from './scroll-area';
+"use client";
+
+import { ScrollAreaVertical as Vertical } from "./scroll-area";
 
 const ScrollArea = {
-  Vertical
+  Vertical,
 };
 
 export default ScrollArea;
