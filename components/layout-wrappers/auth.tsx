@@ -1,8 +1,9 @@
 "use client";
 
-import { Auth } from "@supabase/ui";
 import { useState } from "react";
-import { supabase } from "../../lib/initSupabase";
+import { Auth } from "@supabase/auth-ui-react";
+import { useUser } from "@supabase/auth-helpers-react";
+import { supabase } from "../../lib/supabase/supabase";
 
 interface Props {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ export function AuthWrapper({ children }: Props) {
 }
 
 export const AuthLogin = ({ children }: Props) => {
-  const { user, session } = Auth.useUser();
+  const user = useUser();
   const [authView, setAuthView] = useState<any>("sign_in");
 
   if (!user) {
@@ -29,7 +30,6 @@ export const AuthLogin = ({ children }: Props) => {
           providers={["github"]}
           view={authView}
           socialLayout="horizontal"
-          socialButtonSize="xlarge"
         />
       </div>
     );
