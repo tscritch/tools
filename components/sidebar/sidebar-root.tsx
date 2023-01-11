@@ -22,7 +22,11 @@ export const SidebarRoot: React.FC<SidebarRootProps> = ({
 }) => {
   const classNames = classnames(baseClasses, positionClasses[position]);
 
-  return <div className={classNames}>{children}</div>;
+  return (
+    <div className={classNames} style={{ borderRight: "1px solid #ddd" }}>
+      {children}
+    </div>
+  );
 };
 
 SidebarRoot.displayName = "SidebarRoot";
