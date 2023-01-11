@@ -1,4 +1,5 @@
-import React from 'react';
+import { CheckedState } from "@radix-ui/react-checkbox";
+import React from "react";
 import {
   DropdownMenuContent,
   DropdownMenuRoot,
@@ -11,13 +12,18 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuSub,
   DropdownMenuSubTrigger,
-  DropdownMenuSubContent
-} from './dropdown';
+  DropdownMenuSubContent,
+} from "./dropdown";
 
-type DropdownItemColor = 'primary' | 'secondary' | 'warning' | 'danger' | 'info';
+type DropdownItemColor =
+  | "primary"
+  | "secondary"
+  | "warning"
+  | "danger"
+  | "info";
 
 interface DropdownItemBasic {
-  type: 'basic';
+  type: "basic";
   label: string;
   onClick: () => void;
   disabled?: boolean;
@@ -25,22 +31,22 @@ interface DropdownItemBasic {
 }
 
 interface DropdownItemSeparator {
-  type: 'separator';
+  type: "separator";
 }
 
 interface DropdownItemLabel {
-  type: 'label';
+  type: "label";
   label: string;
 }
 
 interface DropdownItemSubmenu {
-  type: 'submenu';
+  type: "submenu";
   label: string;
   items: DropdownItem[];
 }
 
 interface DropdownItemRadioGroup {
-  type: 'radio-group';
+  type: "radio-group";
   label: string;
   options: DropdownItemRadioOption[];
   onChange: (value: string) => void;
@@ -52,10 +58,10 @@ interface DropdownItemRadioOption {
 }
 
 interface DropdownItemCheckbox {
-  type: 'checkbox';
+  type: "checkbox";
   label: string;
   defaultChecked?: boolean;
-  onChange: (checked: boolean) => void;
+  onChange: (checked: CheckedState) => void;
 }
 
 export type DropdownItem =
@@ -69,15 +75,21 @@ export type DropdownItem =
 export interface DropdownComposedProps {
   items: DropdownItem[];
   trigger: React.ReactNode;
-  align?: 'start' | 'end' | 'center';
+  align?: "start" | "end" | "center";
 }
 
-export const DropdownComposed: React.FC<DropdownComposedProps> = ({ items, trigger, align }) => {
+export const DropdownComposed: React.FC<DropdownComposedProps> = ({
+  items,
+  trigger,
+  align,
+}) => {
   return (
     <DropdownMenuRoot>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
 
-      <DropdownMenuContent align={align}>{renderItems(items)}</DropdownMenuContent>
+      <DropdownMenuContent align={align}>
+        {renderItems(items)}
+      </DropdownMenuContent>
     </DropdownMenuRoot>
   );
 };
@@ -93,14 +105,16 @@ const renderItemFns = {
     </DropdownMenuItem>
   ),
   separator: () => <DropdownMenuSeparator />,
-  label: (item: DropdownItemLabel) => <DropdownMenuLabel>{item.label}</DropdownMenuLabel>,
+  label: (item: DropdownItemLabel) => (
+    <DropdownMenuLabel>{item.label}</DropdownMenuLabel>
+  ),
   submenu: (item: DropdownItemSubmenu) => (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>{item.label}</DropdownMenuSubTrigger>
       <DropdownMenuSubContent>{renderItems(item.items)}</DropdownMenuSubContent>
     </DropdownMenuSub>
   ),
-  'radio-group': (item: DropdownItemRadioGroup) => {
+  "radio-group": (item: DropdownItemRadioGroup) => {
     const [value, setValue] = React.useState(item.options[0].value);
 
     const radioItems = React.useMemo(
@@ -109,7 +123,8 @@ const renderItemFns = {
           <DropdownMenuRadioItem
             key={`adiago-dropdown-${option.value}-${i}`}
             value={option.value}
-            onSelect={(e) => e.preventDefault()}>
+            onSelect={(e) => e.preventDefault()}
+          >
             {option.label}
           </DropdownMenuRadioItem>
         )),
@@ -124,23 +139,27 @@ const renderItemFns = {
           onValueChange={(value) => {
             setValue(value);
             item.onChange(value);
-          }}>
+          }}
+        >
           {radioItems}
         </DropdownMenuRadioGroup>
       </>
     );
   },
   checkbox: (item: DropdownItemCheckbox) => {
-    const [checked, setChecked] = React.useState(item.defaultChecked || false);
+    const [checked, setChecked] = React.useState<CheckedState>(
+      item.defaultChecked || false
+    );
     return (
       <DropdownMenuCheckboxItem
         checked={checked}
         onCheckedChange={(value) => {
           setChecked(value);
           item.onChange(value);
-        }}>
+        }}
+      >
         {item.label}
       </DropdownMenuCheckboxItem>
     );
-  }
+  },
 };
