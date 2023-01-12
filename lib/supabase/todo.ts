@@ -45,6 +45,13 @@ export const completeTodo = async (id: number) => {
     .single();
 };
 
-export const deleteTodo = async (id: number) => {
-  return await supabase.from("todos").delete().eq("id", id);
+export const archiveTodo = async (id: number) => {
+  return await supabase
+    .from("todos")
+    .update({
+      deleted_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select()
+    .single();
 };

@@ -41,8 +41,13 @@ export const CompletedList = () => {
         ) : (
           <ul>
             {todos.map((todo) => (
-              <li key={todo.id} className="flex items-center">
-                {/* <Checkbox checked={true} /> */}
+              <li key={todo.id} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-xs"
+                  checked={todo.completed_at ? true : false}
+                  disabled
+                />
                 <div className="flex-1">{todo.title}</div>
               </li>
             ))}

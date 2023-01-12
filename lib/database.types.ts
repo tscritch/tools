@@ -35,6 +35,7 @@ export interface Database {
         Row: {
           completed_at: string | null
           created_at: string | null
+          deleted_at: string | null
           id: number
           title: string | null
           updated_at: string | null
@@ -43,6 +44,7 @@ export interface Database {
         Insert: {
           completed_at?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           id?: number
           title?: string | null
           updated_at?: string | null
@@ -51,6 +53,7 @@ export interface Database {
         Update: {
           completed_at?: string | null
           created_at?: string | null
+          deleted_at?: string | null
           id?: number
           title?: string | null
           updated_at?: string | null

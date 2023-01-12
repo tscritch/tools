@@ -45,7 +45,7 @@ export const MainNav: React.FC<Props> = ({ children }) => {
 
       <div className="drawer-side">
         <label htmlFor="main-nav-drawer" className="drawer-overlay"></label>
-        <aside className="bg-base-300 w-48">
+        <aside className="bg-base-300 w-48 pt-2">
           <ul className="menu menu-compact p-0 px-4 space-y-1">
             {links.map(({ name, href }) => (
               <li>

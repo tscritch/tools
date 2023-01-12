@@ -88,10 +88,10 @@ export const TodoList = () => {
     }
   };
 
-  const deleteTodo = async (id: number) => {
+  const archiveTodo = async (id: number) => {
     try {
       setLoading(true);
-      const { error } = await Data.deleteTodo(id);
+      const { error } = await Data.archiveTodo(id);
       if (error) throw error;
       const filteredTodos = todos.filter((todo) => todo.id !== id);
       setTodos(filteredTodos);
@@ -137,8 +137,8 @@ export const TodoList = () => {
     setEditingText(text);
   };
 
-  const handleDeleteClick = (id: number) => {
-    deleteTodo(id);
+  const handleArchiveClick = (id: number) => {
+    archiveTodo(id);
   };
 
   const handleNewTodoClick = () => {
@@ -188,7 +188,9 @@ export const TodoList = () => {
                 onBlur={handleEditingBlur}
                 onFocus={() => handleEditingClick(todo.id, todo.title || "")}
               />
-              <button onClick={() => handleDeleteClick(todo.id)}>Delete</button>
+              <button onClick={() => handleArchiveClick(todo.id)}>
+                Archive
+              </button>
             </li>
           ))}
         </ul>

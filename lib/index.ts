@@ -29,6 +29,6 @@ export const completeTodo = async (todo_id: number) => {
   return await SB_Todo.completeTodo(todo_id);
 };
 
-export const deleteTodo = async (todo_id: number) => {
-  return await SB_Todo.deleteTodo(todo_id);
+export const archiveTodo = async (todo_id: number) => {
+  return await SB_Todo.archiveTodo(todo_id);
 };
