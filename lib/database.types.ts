@@ -33,27 +33,27 @@ export interface Database {
     Tables: {
       todos: {
         Row: {
+          archived: boolean | null
           completed_at: string | null
           created_at: string | null
-          deleted_at: string | null
           id: number
           title: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
+          archived?: boolean | null
           completed_at?: string | null
           created_at?: string | null
-          deleted_at?: string | null
           id?: number
           title?: string | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
+          archived?: boolean | null
           completed_at?: string | null
           created_at?: string | null
-          deleted_at?: string | null
           id?: number
           title?: string | null
           updated_at?: string | null

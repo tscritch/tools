@@ -7,6 +7,7 @@ export const getActiveTodos = async (user_id?: string) => {
     .select("*")
     .eq("user_id", user_id)
     .is("completed_at", null)
+    .is("archived", false)
     .order("id", { ascending: false });
 };
 
@@ -49,7 +50,8 @@ export const archiveTodo = async (id: number) => {
   return await supabase
     .from("todos")
     .update({
-      deleted_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+      archived: true,
     })
     .eq("id", id)
     .select()

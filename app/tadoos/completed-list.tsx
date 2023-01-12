@@ -36,23 +36,21 @@ export const CompletedList = () => {
         {loading ? <progress className="progress w-4"></progress> : null}
       </div>
       <div className="p-4">
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <ul>
-            {todos.map((todo) => (
-              <li key={todo.id} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-xs"
-                  checked={todo.completed_at ? true : false}
-                  disabled
-                />
-                <div className="flex-1">{todo.title}</div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-xs"
+                checked={todo.completed_at && !todo.archived ? true : false}
+                disabled
+              />
+              <div className={`flex-1 ${todo.archived ? "line-through" : ""}`}>
+                {todo.title}
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
