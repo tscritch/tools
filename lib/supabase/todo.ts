@@ -6,6 +6,16 @@ export const getActiveTodos = async (user_id?: string) => {
     .from("todos")
     .select("*")
     .eq("user_id", user_id)
+    .is("completed_at", null)
+    .order("id", { ascending: false });
+};
+
+export const getCompletedTodos = async (user_id?: string) => {
+  return await supabase
+    .from("todos")
+    .select("*")
+    .eq("user_id", user_id)
+    .not("completed_at", "is", null)
     .order("id", { ascending: false });
 };
 

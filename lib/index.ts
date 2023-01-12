@@ -4,9 +4,9 @@ export const getActiveTodos = async (user_id?: string) => {
   return await SB_Todo.getActiveTodos(user_id);
 };
 
-// export const getCompletedTodos = async (user_id?: string) => {
-//   return await SB_Todo.getCompletedTodos(user_id);
-// }
+export const getCompletedTodos = async (user_id?: string) => {
+  return await SB_Todo.getCompletedTodos(user_id);
+};
 
 interface CreateTodo {
   user_id: string;
