@@ -2,24 +2,39 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Sidebar from "../components/sidebar";
 
 export const MainNav = () => {
   const pathname = usePathname();
 
   return (
-    <Sidebar.Root>
-      <Sidebar.Content className="p-2">
-        <h1 className="text-sm">Tad's Tools</h1>
-        {links.map(({ name, href }) => (
-          <Link key={name} href={href} className="text-djent-900 no-underline">
-            <Sidebar.ListItem active={href === pathname}>
-              {name}
-            </Sidebar.ListItem>
-          </Link>
-        ))}
-      </Sidebar.Content>
-    </Sidebar.Root>
+    <div className="drawer drawer-mobile">
+      <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content flex flex-col items-center justify-center">
+        <label
+          htmlFor="my-drawer-2"
+          className="btn btn-primary drawer-button lg:hidden"
+        >
+          Open drawer
+        </label>
+      </div>
+
+      <div className="drawer-side">
+        <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
+        <ul className="menu p-4 w-80 bg-base-100 text-base-content">
+          {links.map(({ name, href }) => (
+            <li>
+              <Link
+                key={name}
+                href={href}
+                className={pathname === href ? "active" : ""}
+              >
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 

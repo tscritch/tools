@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 import { useUser } from "@supabase/auth-helpers-react";
 import * as Data from "@lib/index";
 import { Todo } from "@lib/types";
-import { Checkbox } from "@components/checkbox";
-import { Input } from "@components/input";
-import { Button } from "@components/button";
 
 export const CompletedList = () => {
   const user = useUser();
@@ -44,7 +41,7 @@ export const CompletedList = () => {
           <ul>
             {todos.map((todo) => (
               <li key={todo.id} className="flex items-center">
-                <Checkbox checked={true} />
+                {/* <Checkbox checked={true} /> */}
                 <div className="flex-1">{todo.title}</div>
               </li>
             ))}

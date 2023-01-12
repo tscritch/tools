@@ -2,12 +2,9 @@
 
 import { useUser } from "@supabase/auth-helpers-react";
 
-import { Button } from "@components/button";
-import { Input } from "@components/input";
 import * as Data from "@lib/index";
 import { Todo } from "@lib/types";
 import { useEffect, useState } from "react";
-import { Checkbox } from "@components/checkbox";
 
 export const TodoList = () => {
   const user = useUser();
@@ -151,13 +148,16 @@ export const TodoList = () => {
       <div className="p-1">
         <h4>Active</h4>
         <div className="flex items-center">
-          <Input
+          <input
+            className="input input-bordered input-sm w-full max-w-xs"
             placeholder="New todo"
             value={newTodo}
             onChange={handleNewTodoChange}
             onKeyDown={handleNewTodoKeyDown}
           />
-          <Button onClick={handleNewTodoClick}>Create</Button>
+          <button className="btn-primary btn-sm" onClick={handleNewTodoClick}>
+            Create
+          </button>
         </div>
       </div>
       <div className="p-4">
@@ -167,9 +167,9 @@ export const TodoList = () => {
           <ul>
             {todos.map((todo) => (
               <li key={todo.id} className="flex items-center">
-                <Checkbox onClick={() => completeTodo(todo.id)} />
+                {/* <Checkbox onClick={() => completeTodo(todo.id)} /> */}
                 {editing && editingId === todo.id ? (
-                  <Input
+                  <input
                     value={editingText}
                     onChange={handleEditingTextChange}
                     onKeyDown={handleEditingKeyDown}
@@ -178,14 +178,14 @@ export const TodoList = () => {
                 ) : (
                   <div className="flex-1">{todo.title}</div>
                 )}
-                <Button
+                <button
                   onClick={() => handleEditingClick(todo.id, todo.title || "")}
                 >
                   Edit
-                </Button>
-                <Button onClick={() => handleDeleteClick(todo.id)}>
+                </button>
+                <button onClick={() => handleDeleteClick(todo.id)}>
                   Delete
-                </Button>
+                </button>
               </li>
             ))}
           </ul>
