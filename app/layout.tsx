@@ -17,9 +17,7 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={classNames} data-theme="cupcake">
       <body className="h-full w-full flex m-0 p-0">
-        <MainNav />
-
-        <div className="w-full h-full overflow-auto">{children}</div>
+        <MainNav>{children}</MainNav>
       </body>
     </html>
   );
