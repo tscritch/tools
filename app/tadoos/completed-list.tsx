@@ -31,8 +31,9 @@ export const CompletedList = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="p-1">
+      <div className="p-1 flex justify-between items-center">
         <h4 className="mb-0">History</h4>
+        {loading ? <progress className="progress w-4"></progress> : null}
       </div>
       <div className="p-4">
         {loading ? (

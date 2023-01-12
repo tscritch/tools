@@ -5,6 +5,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import * as Data from "@lib/index";
 import { Todo } from "@lib/types";
 import { useEffect, useState } from "react";
+import { delay } from "@lib/helpers";
 
 export const TodoList = () => {
   const user = useUser();
@@ -40,7 +41,7 @@ export const TodoList = () => {
       const user_id = user!.id;
       const { data, error } = await Data.createTodo({ user_id, title });
       if (error) throw error;
-      setTodos([...todos, data]);
+      setTodos([data, ...todos]);
       setNewTodo("");
     } catch (error: any) {
       alert(error.message);
@@ -64,12 +65,16 @@ export const TodoList = () => {
       setEditing(false);
       setEditingId(0);
       setEditingText("");
+      setLoading(false);
     } catch (error: any) {
       alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const completeTodo = async (id: number) => {
+    await delay(100);
     try {
       setLoading(true);
       const { error } = await Data.completeTodo(id);
@@ -145,9 +150,12 @@ export const TodoList = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="p-1">
-        <h4>Active</h4>
-        <div className="flex items-center">
+      <div className="p-1 border">
+        <div className="w-full flex justify-between items-center">
+          <h4>Active</h4>
+          {loading ? <progress className="progress w-4"></progress> : null}
+        </div>
+        <div className="w-full flex item-center space-x-2">
           <input
             className="input input-bordered input-sm w-full max-w-xs"
             placeholder="New todo"
@@ -155,41 +163,35 @@ export const TodoList = () => {
             onChange={handleNewTodoChange}
             onKeyDown={handleNewTodoKeyDown}
           />
-          <button className="btn-primary btn-sm" onClick={handleNewTodoClick}>
-            Create
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleNewTodoClick}
+          >
+            Add
           </button>
         </div>
       </div>
-      <div className="p-4">
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <ul>
-            {todos.map((todo) => (
-              <li key={todo.id} className="flex items-center">
-                {/* <Checkbox onClick={() => completeTodo(todo.id)} /> */}
-                {editing && editingId === todo.id ? (
-                  <input
-                    value={editingText}
-                    onChange={handleEditingTextChange}
-                    onKeyDown={handleEditingKeyDown}
-                    onBlur={handleEditingBlur}
-                  />
-                ) : (
-                  <div className="flex-1">{todo.title}</div>
-                )}
-                <button
-                  onClick={() => handleEditingClick(todo.id, todo.title || "")}
-                >
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteClick(todo.id)}>
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className="p-4 border">
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id} className="flex items-center space-x-1">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-xs"
+                onClick={() => completeTodo(todo.id)}
+              />
+              <input
+                className="input input-xs flex-1"
+                value={editingId === todo.id ? editingText : todo.title || ""}
+                onChange={handleEditingTextChange}
+                onKeyDown={handleEditingKeyDown}
+                onBlur={handleEditingBlur}
+                onFocus={() => handleEditingClick(todo.id, todo.title || "")}
+              />
+              <button onClick={() => handleDeleteClick(todo.id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

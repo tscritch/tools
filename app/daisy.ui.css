@@ -8,3 +8,9 @@
   padding-top: 0.325rem;
   padding-bottom: 0.325rem;
 }
+
+.progress:indeterminate::after {
+  animation-duration: 1s;
+  width: 100%;
+  left: -100%;
+}
