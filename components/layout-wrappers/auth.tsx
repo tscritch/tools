@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Auth } from "@supabase/auth-ui-react";
-import { useUser } from "@supabase/auth-helpers-react";
+import { useUser, SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "../../lib/supabase/supabase";
 
 interface Props {
@@ -11,15 +10,14 @@ interface Props {
 
 export function AuthWrapper({ children }: Props) {
   return (
-    <Auth.UserContextProvider supabaseClient={supabase}>
+    <SessionContextProvider supabaseClient={supabase}>
       <AuthLogin>{children}</AuthLogin>
-    </Auth.UserContextProvider>
+    </SessionContextProvider>
   );
 }
 
 export const AuthLogin = ({ children }: Props) => {
   const user = useUser();
-  const [authView, setAuthView] = useState<any>("sign_in");
 
   if (!user) {
     return (
@@ -28,7 +26,7 @@ export const AuthLogin = ({ children }: Props) => {
           supabaseClient={supabase}
           onlyThirdPartyProviders
           providers={["github"]}
-          view={authView}
+          view={"sign_in"}
           socialLayout="horizontal"
         />
       </div>

@@ -1,12 +1,16 @@
 "use client";
 
+import { useUser } from "@supabase/auth-helpers-react";
+
+import { Button } from "@components/button";
+import { Input } from "@components/input";
 import * as Data from "@lib/index";
 import { Todo } from "@lib/types";
-import { Auth } from "@supabase/ui";
 import { useEffect, useState } from "react";
+import { Checkbox } from "@components/checkbox";
 
 export const TodoList = () => {
-  const { user } = Auth.useUser();
+  const user = useUser();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [newTodo, setNewTodo] = useState<string>("");
@@ -65,6 +69,20 @@ export const TodoList = () => {
       setEditingText("");
     } catch (error: any) {
       alert(error.message);
+    }
+  };
+
+  const completeTodo = async (id: number) => {
+    try {
+      setLoading(true);
+      const { error } = await Data.completeTodo(id);
+      if (error) throw error;
+      const filteredTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(filteredTodos);
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,23 +148,16 @@ export const TodoList = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="p-4">
-        <h1>Tadoos</h1>
+      <div className="p-1">
+        <h4>Active</h4>
         <div className="flex items-center">
-          <input
-            type="text"
-            className="border border-gray-300 rounded-md p-2"
+          <Input
             placeholder="New todo"
             value={newTodo}
             onChange={handleNewTodoChange}
             onKeyDown={handleNewTodoKeyDown}
           />
-          <button
-            className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleNewTodoClick}
-          >
-            Create
-          </button>
+          <Button onClick={handleNewTodoClick}>Create</Button>
         </div>
       </div>
       <div className="p-4">
@@ -156,10 +167,9 @@ export const TodoList = () => {
           <ul>
             {todos.map((todo) => (
               <li key={todo.id} className="flex items-center">
+                <Checkbox onClick={() => completeTodo(todo.id)} />
                 {editing && editingId === todo.id ? (
-                  <input
-                    type="text"
-                    className="border border-gray-300 rounded-md p-2"
+                  <Input
                     value={editingText}
                     onChange={handleEditingTextChange}
                     onKeyDown={handleEditingKeyDown}
@@ -168,18 +178,14 @@ export const TodoList = () => {
                 ) : (
                   <div className="flex-1">{todo.title}</div>
                 )}
-                <button
-                  className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                <Button
                   onClick={() => handleEditingClick(todo.id, todo.title || "")}
                 >
                   Edit
-                </button>
-                <button
-                  className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleDeleteClick(todo.id)}
-                >
+                </Button>
+                <Button onClick={() => handleDeleteClick(todo.id)}>
                   Delete
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
