@@ -158,28 +158,29 @@ export const TodoList = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="p-1 border">
+      <div className="p-1">
         <div className="w-full flex justify-between items-center">
           <h4>Active</h4>
           {loading ? <progress className="progress w-4"></progress> : null}
         </div>
-        <div className="w-full flex item-center space-x-2">
+        <div className="pt-4 w-full flex item-center space-x-2">
+          <div className="w-6"></div>
           <input
-            className="input input-bordered input-sm w-full max-w-xs"
+            className="input input-xs w-full max-w-xs"
             placeholder="New todo"
             value={newTodo}
             onChange={handleNewTodoChange}
             onKeyDown={handleNewTodoKeyDown}
           />
           <button
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-xs"
             onClick={handleNewTodoClick}
           >
             Add
           </button>
         </div>
       </div>
-      <div className="p-4 border">
+      <div className="py-2 px-4">
         <ul>
           {activeTodos.map((todo) => (
             <li key={todo.id} className="flex items-center space-x-1">

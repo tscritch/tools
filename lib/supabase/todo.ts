@@ -17,7 +17,7 @@ export const getCompletedTodos = async (user_id?: string) => {
     .select("*")
     .eq("user_id", user_id)
     .not("completed_at", "is", null)
-    .order("id", { ascending: false });
+    .order("completed_at", { ascending: false });
 };
 
 export const createTodo = async (user_id: string, title: string) => {
