@@ -6,16 +6,16 @@ import * as Data from "@lib/index";
 import { Todo } from "@lib/types";
 import { useEffect, useState } from "react";
 import { delay } from "@lib/helpers";
+import { useTodoStore } from "./store";
 
 export const TodoList = () => {
   const user = useUser();
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { activeTodos, historyTodos, setActiveTodos, setHistoryTodos } =
+    useTodoStore();
   const [loading, setLoading] = useState<boolean>(true);
   const [newTodo, setNewTodo] = useState<string>("");
-  const [editing, setEditing] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number>(0);
   const [editingText, setEditingText] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTodos();
@@ -27,7 +27,7 @@ export const TodoList = () => {
       const user_id = user?.id;
       const { data, error } = await Data.getActiveTodos(user_id);
       if (error) throw error;
-      setTodos(data);
+      setActiveTodos(data);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -41,7 +41,7 @@ export const TodoList = () => {
       const user_id = user!.id;
       const { data, error } = await Data.createTodo({ user_id, title });
       if (error) throw error;
-      setTodos([data, ...todos]);
+      setActiveTodos([data, ...activeTodos]);
       setNewTodo("");
     } catch (error: any) {
       alert(error.message);
@@ -55,14 +55,13 @@ export const TodoList = () => {
       setLoading(true);
       const { error } = await Data.updateTodo({ id, title });
       if (error) throw error;
-      const updatedTodos = todos.map((todo) => {
+      const updatedTodos = activeTodos.map((todo) => {
         if (todo.id === id) {
           return { ...todo, title };
         }
         return todo;
       });
-      setTodos(updatedTodos);
-      setEditing(false);
+      setActiveTodos(updatedTodos);
       setEditingId(0);
       setEditingText("");
       setLoading(false);
@@ -79,8 +78,12 @@ export const TodoList = () => {
       setLoading(true);
       const { error } = await Data.completeTodo(id);
       if (error) throw error;
-      const filteredTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(filteredTodos);
+      const todo = activeTodos.find((t) => t.id === id);
+      if (!todo) throw new Error(`Todo not found: ${id}`);
+      todo.completed_at = new Date().toISOString();
+      setHistoryTodos([todo, ...historyTodos]);
+      const filteredTodos = activeTodos.filter((todo) => todo.id !== id);
+      setActiveTodos(filteredTodos);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -93,8 +96,14 @@ export const TodoList = () => {
       setLoading(true);
       const { error } = await Data.archiveTodo(id);
       if (error) throw error;
-      const filteredTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(filteredTodos);
+      const todo = activeTodos.find((t) => t.id === id);
+      if (!todo) throw new Error(`archiveTodo: Todo not found: ${id}`);
+      const newTodo = { ...todo };
+      newTodo.completed_at = new Date().toISOString();
+      newTodo.archived = true;
+      setHistoryTodos([newTodo, ...historyTodos]);
+      const filteredTodos = activeTodos.filter((t) => t.id !== id);
+      setActiveTodos(filteredTodos);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -132,7 +141,6 @@ export const TodoList = () => {
   };
 
   const handleEditingClick = (id: number, text: string) => {
-    setEditing(true);
     setEditingId(id);
     setEditingText(text);
   };
@@ -173,7 +181,7 @@ export const TodoList = () => {
       </div>
       <div className="p-4 border">
         <ul>
-          {todos.map((todo) => (
+          {activeTodos.map((todo) => (
             <li key={todo.id} className="flex items-center space-x-1">
               <input
                 type="checkbox"

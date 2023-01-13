@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { useUser } from "@supabase/auth-helpers-react";
 import * as Data from "@lib/index";
 import { Todo } from "@lib/types";
+import { useTodoStore } from "./store";
 
 export const CompletedList = () => {
   const user = useUser();
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { historyTodos, setHistoryTodos } = useTodoStore();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +22,7 @@ export const CompletedList = () => {
       const user_id = user?.id;
       const { data, error } = await Data.getCompletedTodos(user_id);
       if (error) throw error;
-      setTodos(data);
+      setHistoryTodos(data);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -37,7 +38,7 @@ export const CompletedList = () => {
       </div>
       <div className="p-4">
         <ul>
-          {todos.map((todo) => (
+          {historyTodos.map((todo) => (
             <li key={todo.id} className="flex items-center space-x-2">
               <input
                 type="checkbox"
