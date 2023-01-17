@@ -19,6 +19,19 @@ export const TodoList = () => {
 
   useEffect(() => {
     fetchTodos();
+
+    // refresh when tab is visible
+    const visibilitychange = () => {
+      if (!document.hidden) {
+        fetchTodos();
+      }
+    };
+
+    document.addEventListener("visibilitychange", visibilitychange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", visibilitychange);
+    };
   }, []);
 
   const fetchTodos = async () => {
