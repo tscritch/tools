@@ -3,7 +3,6 @@
 import { useUser } from "@supabase/auth-helpers-react";
 
 import * as Data from "@lib/index";
-import { Todo } from "@lib/types";
 import { useEffect, useState } from "react";
 import { delay } from "@lib/helpers";
 import { useTodoStore } from "./store";

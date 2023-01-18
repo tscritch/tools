@@ -28,3 +28,22 @@ export const useTodoStore = create<TodoStore>()(
     )
   )
 );
+
+interface LabelStore {
+  labels: string[];
+  setLabels: (labels: string[]) => void;
+}
+
+export const useLabelStore = create<LabelStore>()(
+  devtools(
+    persist(
+      (set) => ({
+        labels: [],
+        setLabels: (labels: string[]) => set({ labels }),
+      }),
+      {
+        name: "label-store",
+      }
+    )
+  )
+);
