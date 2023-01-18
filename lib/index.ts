@@ -12,9 +12,10 @@ export const getCompletedTodos = async (user_id?: string) => {
 interface CreateTodo {
   user_id: string;
   title: string;
+  label_id?: number;
 }
 export const createTodo = async (todo: CreateTodo) => {
-  return await SB_Todo.createTodo(todo.user_id, todo.title);
+  return await SB_Todo.createTodo(todo.user_id, todo.title, todo.label_id);
 };
 
 interface UpdateTodo {
@@ -35,7 +36,7 @@ export const archiveTodo = async (todo_id: number) => {
 };
 
 // labels
-export const getUserLabels = async (user_id?: string) => {
+export const getUserLabels = async (user_id: string) => {
   return await SB_Label.getUserLabels(user_id);
 };
 

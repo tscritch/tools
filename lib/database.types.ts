@@ -31,12 +31,39 @@ export interface Database {
   }
   public: {
     Tables: {
+      labels: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          deleted_at: string | null
+          id: number
+          text: string
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: number
+          text: string
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          deleted_at?: string | null
+          id?: number
+          text?: string
+          user_id?: string
+        }
+      }
       todos: {
         Row: {
           archived: boolean | null
           completed_at: string | null
           created_at: string | null
           id: number
+          label_id: number | null
           title: string | null
           updated_at: string | null
           user_id: string
@@ -46,6 +73,7 @@ export interface Database {
           completed_at?: string | null
           created_at?: string | null
           id?: number
+          label_id?: number | null
           title?: string | null
           updated_at?: string | null
           user_id: string
@@ -55,6 +83,7 @@ export interface Database {
           completed_at?: string | null
           created_at?: string | null
           id?: number
+          label_id?: number | null
           title?: string | null
           updated_at?: string | null
           user_id?: string

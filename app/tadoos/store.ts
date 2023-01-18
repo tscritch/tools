@@ -2,7 +2,7 @@
 // active todos and history todos are stored separately
 
 "use client";
-import { Todo } from "@lib/types";
+import { Label, Todo } from "@lib/types";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -30,8 +30,8 @@ export const useTodoStore = create<TodoStore>()(
 );
 
 interface LabelStore {
-  labels: string[];
-  setLabels: (labels: string[]) => void;
+  labels: Label[];
+  setLabels: (labels: Label[]) => void;
 }
 
 export const useLabelStore = create<LabelStore>()(
@@ -39,7 +39,7 @@ export const useLabelStore = create<LabelStore>()(
     persist(
       (set) => ({
         labels: [],
-        setLabels: (labels: string[]) => set({ labels }),
+        setLabels: (labels: Label[]) => set({ labels }),
       }),
       {
         name: "label-store",

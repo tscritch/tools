@@ -20,10 +20,14 @@ export const getCompletedTodos = async (user_id?: string) => {
     .order("completed_at", { ascending: false });
 };
 
-export const createTodo = async (user_id: string, title: string) => {
+export const createTodo = async (
+  user_id: string,
+  title: string,
+  label_id?: number
+) => {
   return await supabase
     .from("todos")
-    .insert({ user_id, title })
+    .insert({ user_id, title, label_id })
     .select()
     .single();
 };
