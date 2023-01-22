@@ -48,7 +48,7 @@ export const CompletedList = () => {
         <h4 className="mb-0">History</h4>
         {loading ? <progress className="progress w-4"></progress> : null}
       </div>
-      <div className="p-4">
+      <div className="p-4 overflow-y-scroll max-h-[32rem]">
         <ul>
           {historyTodos.map((todo) => (
             <li key={todo.id} className="flex items-center space-x-2">

@@ -9,7 +9,9 @@ import { useFresh } from "@lib/hooks/useFresh";
 export const NewTodo = () => {
   const user = useUser();
   const [newTodo, setNewTodo] = useState<string>("");
+  const [labelId, setLabelId] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+
   const { activeTodos, setActiveTodos } = useTodoStore();
   const { labels, setLabels } = useLabelStore();
 
@@ -19,7 +21,6 @@ export const NewTodo = () => {
       const user_id = user!.id;
 
       const { data, error } = await Data.getUserLabels(user_id);
-      console.log("user_id", data);
       if (error) throw error;
       setLabels(data);
     } catch (error: any) {
@@ -33,7 +34,11 @@ export const NewTodo = () => {
     try {
       setLoading(true);
       const user_id = user!.id;
-      const { data, error } = await Data.createTodo({ user_id, title });
+      const { data, error } = await Data.createTodo({
+        user_id,
+        title,
+        label_id: labelId ? Number(labelId) : undefined,
+      });
       if (error) throw error;
       setActiveTodos([data, ...activeTodos]);
       setNewTodo("");
@@ -72,12 +77,18 @@ export const NewTodo = () => {
           onChange={handleNewTodoChange}
           onKeyDown={handleNewTodoKeyDown}
         />
-        <select className="select select-xs">
+        <select
+          className="select select-xs"
+          value={labelId}
+          onChange={(e) => setLabelId(e.target.value)}
+        >
           <option disabled selected>
             Label
           </option>
           {labels.map((label) => (
-            <option key={label.id}>{label.text}</option>
+            <option key={label.id} value={label.id}>
+              {label.text}
+            </option>
           ))}
         </select>
       </div>
