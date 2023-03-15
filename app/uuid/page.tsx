@@ -1,10 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { cryp } from "../../lib/crypto";
 
 export default () => {
   // generate a random uuid on page load or on a button click
-  const [uuid, setUuid] = useState(crypto.randomUUID());
+  const [uuid, setUuid] = useState<string>();
+
+  useEffect(() => {
+    if (!window) return;
+
+    setUuid(cryp.randomUUID());
+  }, []);
+
   return (
     <div className="h-full w-full">
       <div className="p-2">
@@ -15,7 +23,7 @@ export default () => {
           </div>
           <button
             className="btn btn-primary"
-            onClick={() => setUuid(crypto.randomUUID())}
+            onClick={() => setUuid(cryp.randomUUID())}
           >
             Generate
           </button>

@@ -48,12 +48,8 @@ export const MainNav: React.FC<Props> = ({ children }) => {
         <aside className="bg-base-300 w-48 pt-2">
           <ul className="menu menu-compact p-0 px-4 space-y-1">
             {links.map(({ name, href }) => (
-              <li>
-                <Link
-                  key={name}
-                  href={href}
-                  className={pathname === href ? "active" : ""}
-                >
+              <li key={name}>
+                <Link href={href} className={pathname === href ? "active" : ""}>
                   {name}
                 </Link>
               </li>
@@ -76,7 +72,7 @@ const links = [
   },
   {
     name: "UUIDs",
-    href: "/uuids",
+    href: "/uuid",
   },
   {
     name: "Aspect Ratio",

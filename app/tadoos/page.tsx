@@ -9,6 +9,13 @@ export default () => {
         <div className="p-2">
           <TodoList />
           <CompletedList />
+          <div className="toast">
+            <div className="alert alert-info">
+              <div>
+                <span>Settings Button</span>
+              </div>
+            </div>
+          </div>
         </div>
       </AuthWrapper>
     </div>
