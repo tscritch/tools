@@ -78,4 +78,8 @@ const links = [
     name: "UUIDs",
     href: "/uuids",
   },
+  {
+    name: "Aspect Ratio",
+    href: "/aspect-ratio",
+  },
 ];
